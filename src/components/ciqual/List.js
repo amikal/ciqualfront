@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { list, reset } from '../../actions/ciqual/list';
 import { success } from '../../actions/ciqual/delete';
@@ -35,8 +35,6 @@ class List extends Component {
       {this.props.loading && <div className="alert alert-info">Loading...</div>}
       {this.props.deletedItem && <div className="alert alert-success">{this.props.deletedItem['@id']} deleted.</div>}
       {this.props.error && <div className="alert alert-danger">{this.props.error}</div>}
-
-      <p><Link to="create" className="btn btn-default">Create</Link></p>
 
       <div className="table-responsive">
           <table className="table table-striped table-hover">
@@ -116,7 +114,7 @@ class List extends Component {
           <tbody>
           {this.props.data['hydra:member'] && this.props.data['hydra:member'].map(item =>
             <tr className={item['@id']} key={item['@id']}>
-              <td><Link to={`show/${encodeURIComponent(item['@id'])}`}>{item['@id']}</Link></td>
+              <td><Link to={`/show/${item['id']}`}>{item['@id']}</Link></td>
               <td>{item['id'] ? itemToLinks(item['id']) : ''}</td>
               <td>{item['origgpcd'] ? itemToLinks(item['origgpcd']) : ''}</td>
               <td>{item['origgpfr'] ? itemToLinks(item['origgpfr']) : ''}</td>
@@ -184,13 +182,13 @@ class List extends Component {
               <td>{item['vitamineB9OuFolatesTotauxMicrog100g'] ? itemToLinks(item['vitamineB9OuFolatesTotauxMicrog100g']) : ''}</td>
               <td>{item['vitamineB12Microg100g'] ? itemToLinks(item['vitamineB12Microg100g']) : ''}</td>
               <td>
-                <Link to={`show/${encodeURIComponent(item['@id'])}`}>
+                <Link to={`/show/${item['id']}`}>
                   <span className="glyphicon glyphicon-search" aria-hidden="true"/>
                   <span className="sr-only">Show</span>
                 </Link>
               </td>
               <td>
-                <Link to={`edit/${encodeURIComponent(item['@id'])}`}>
+                <Link to={`/edit/${item['id']}`}>
                   <span className="glyphicon glyphicon-pencil" aria-hidden="true"/>
                   <span className="sr-only">Edit</span>
                 </Link>
@@ -239,4 +237,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));

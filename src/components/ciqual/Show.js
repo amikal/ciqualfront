@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link, Redirect} from 'react-router-dom';
+import {Link, Redirect,withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {retrieve, reset} from '../../actions/ciqual/show';
 import { del, loading, error } from '../../actions/ciqual/delete';
+
 
 class Show extends Component {
   static propTypes = {
@@ -320,7 +321,7 @@ class Show extends Component {
       </div>
       }
       <Link to=".." className="btn btn-default">Back to list</Link>
-      {item && <Link to={`/ciquals/edit/${encodeURIComponent(item['@id'])}`}>
+      {item && <Link to={`/edit/${item['id']}`}>
         <button className="btn btn-warning">Edit</button>
         </Link>
       }
@@ -352,4 +353,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Show);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Show));
