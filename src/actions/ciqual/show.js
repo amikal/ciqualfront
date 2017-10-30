@@ -1,4 +1,4 @@
-import ciqualFetch from '../../api/ciqualFetch';
+import fetch from '../../utils/fetch';
 
 export function error(error) {
   return {type: 'CIQUAL_SHOW_ERROR', error};
@@ -16,7 +16,7 @@ export function retrieve(id) {
   return (dispatch) => {
     dispatch(loading(true));
 
-    return ciqualFetch(id)
+    return fetch(id)
       .then(response => response.json())
       .then(data => {
         dispatch(loading(false));

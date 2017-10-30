@@ -1,9 +1,9 @@
 import { SubmissionError } from 'redux-form';
-import { API_HOST, API_PATH } from './_entrypoint';
+import { API_HOST, API_PATH } from '../config/_entrypoint';
 
 const jsonLdMimeType = 'application/ld+json';
 
-export default function ciqualFetch(url, options = {}) {
+export default function (url, options = {}) {
   if ('undefined' === typeof options.headers) options.headers = new Headers();
   if (null === options.headers.get('Accept')) options.headers.set('Accept', jsonLdMimeType);
 
@@ -19,7 +19,7 @@ export default function ciqualFetch(url, options = {}) {
     return response
       .json()
       .then(json => {
-        const error = json['hydra:description'] ? json['hydra:description'] : response.statusText;
+        const error = json['description'] ? json['description'] : response.statusText;
         if (!json.violations) throw Error(error);
 
         let errors = {_error: error};

@@ -11,17 +11,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { syncHistoryWithStore, routerReducer as routing } from 'react-router-redux'
 
-// import reducers
+// Replace "foo" by the name of the resource type
 import ciqual from './reducers/ciqual/';
-
-//import routes
 import ciqualRoutes from './routes/ciqual';
-
-// Add the reducer
-//combineReducers(ciqual,{/* ... */}),
-
-// Add routes to <Switch>
-//    { ciqualRoutes }
 
 const store = createStore(
     combineReducers({routing, form, ciqual}), // Don't forget to register the reducers here
@@ -29,8 +21,6 @@ const store = createStore(
 );
 
 const history = syncHistoryWithStore(createBrowserHistory(), store);
-
-//ReactDOM.render(<App />, document.getElementById('root'));
 
 ReactDOM.render(
     <Provider store={store}>
@@ -45,3 +35,4 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
+

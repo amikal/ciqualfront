@@ -1,5 +1,5 @@
 import { SubmissionError } from 'redux-form';
-import ciqualFetch from '../../api/ciqualFetch';
+import fetch from '../../utils/fetch';
 import { success as createSuccess } from './create';
 
 export function retrieveError(retrieveError) {
@@ -18,7 +18,7 @@ export function retrieve(id) {
   return (dispatch) => {
     dispatch(retrieveLoading(true));
 
-    return ciqualFetch(id)
+    return fetch(id)
       .then(response => response.json())
       .then(data => {
         dispatch(retrieveLoading(false));
@@ -49,7 +49,7 @@ export function update(item, values) {
     dispatch(createSuccess(null));
     dispatch(updateLoading(true));
 
-    return ciqualFetch(item['@id'], {
+    return fetch(item['@id'], {
         method: 'PUT',
         headers: new Headers({'Content-Type': 'application/ld+json'}),
         body: JSON.stringify(values),

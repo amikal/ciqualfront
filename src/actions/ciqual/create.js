@@ -1,5 +1,5 @@
 import { SubmissionError } from 'redux-form';
-import ciqualFetch from '../../api/ciqualFetch';
+import fetch from '../../utils/fetch';
 
 export function error(error) {
   return {type: 'CIQUAL_CREATE_ERROR', error};
@@ -17,7 +17,7 @@ export function create(values) {
   return (dispatch) => {
     dispatch(loading(true));
 
-    return ciqualFetch('/iquals', {method: 'POST', body: JSON.stringify(values)})
+    return fetch('/ciquals', {method: 'POST', body: JSON.stringify(values)})
       .then(response => {
         dispatch(loading(false));
 

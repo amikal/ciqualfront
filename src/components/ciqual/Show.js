@@ -320,7 +320,7 @@ class Show extends Component {
       </div>
       }
       <Link to=".." className="btn btn-default">Back to list</Link>
-      {item && <Link to={`/iquals/edit/${encodeURIComponent(item['@id'])}`}>
+      {item && <Link to={`/ciquals/edit/${encodeURIComponent(item['@id'])}`}>
         <button className="btn btn-warning">Edit</button>
         </Link>
       }

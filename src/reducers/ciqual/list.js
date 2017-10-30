@@ -26,27 +26,17 @@ export function loading(state = false, action) {
   }
 }
 
-export function items(state = [], action) {
+export function data(state = {}, action) {
   switch (action.type) {
     case 'CIQUAL_LIST_SUCCESS':
-      return action.items;
+      return action.data;
 
     case 'CIQUAL_LIST_RESET':
-      return [];
+      return {};
 
     default:
       return state;
   }
 }
 
-export function view(state = [], action) {
-  switch (action.type) {
-    case 'CIQUAL_LIST_VIEW':
-      return action.items;
-
-    default:
-      return state;
-  }
-}
-
-export default combineReducers({error, loading, items, view});
+export default combineReducers({error, loading, data});
