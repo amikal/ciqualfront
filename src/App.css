@@ -1,3 +1,7 @@
+body {
+    background-color:lightblue;
+}
+
 .App {
   text-align: center;
 }
@@ -20,6 +24,39 @@
 
 .App-intro {
   font-size: large;
+}
+
+.App-menu-row {
+    margin:2px auto;
+    height: 25px;
+}
+
+ul.App-menu {
+    padding:0;
+    list-style-type:none;
+}
+
+li {
+    margin-left:2px;
+}
+
+ul.App-menu li a {
+    display:block;
+    float:left;
+    width:75px;
+    background-color:darkcyan;
+    color:black;
+    text-decoration:none;
+    text-align:center;
+    padding:2px;
+    border:1px solid;
+    /*pour avoir un effet "outset" avec IE :*/
+    border-color:#DCDCDC #696969 #696969 #DCDCDC;
+}
+
+ul.App-menu li a:hover {
+    background-color:aqua;
+    border-color:#696969 #DCDCDC #DCDCDC #696969;
 }
 
 @keyframes App-logo-spin {

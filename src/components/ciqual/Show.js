@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import {Link, Redirect,withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {retrieve, reset} from '../../actions/ciqual/show';
-import { del, loading, error } from '../../actions/ciqual/delete';
+import logo from '../../logo.svg';
+import '../../App.css';
 
 
 class Show extends Component {
@@ -13,10 +14,6 @@ class Show extends Component {
     retrieved: PropTypes.object,
     retrieve: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
-    deleteError: PropTypes.string,
-    deleteLoading: PropTypes.bool.isRequired,
-    deleted: PropTypes.object,
-    del: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -27,21 +24,27 @@ class Show extends Component {
     this.props.reset();
   }
 
-  del = () => {
-    if (window.confirm('Are you sure you want to delete this item?')) this.props.del(this.props.retrieved);
-  };
-
   render() {
     if (this.props.deleted) return <Redirect to=".."/>;
 
     const item = this.props.retrieved;
 
     return (<div>
-      <h1>Show {item && item['@id']}</h1>
+        <div className="App">
+            <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="App-title">Welcome to Ciqual Database</h1>
+            </header>
+            <div className="App-menu-row">
+                <ul className="App-menu">
+                    <li><Link to='..'>List</Link></li>
+                    <li> <Link to='../search'>Search</Link></li>
+                </ul>
+            </div>
+        </div>
+      <h2>Show {item && item['@id']}</h2>
 
       {this.props.loading && <div className="alert alert-info" role="status">Loading...</div>}
-      {this.props.error && <div className="alert alert-danger" role="alert"><span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {this.props.error}</div>}
-      {this.props.deleteError && <div className="alert alert-danger" role="alert"><span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {this.props.deleteError}</div>}
 
       {item && <div className="table-responsive">
         <table className="table table-striped table-hover">
@@ -321,11 +324,6 @@ class Show extends Component {
       </div>
       }
       <Link to=".." className="btn btn-default">Back to list</Link>
-      {item && <Link to={`/edit/${item['id']}`}>
-        <button className="btn btn-warning">Edit</button>
-        </Link>
-      }
-      <button onClick={this.del} className="btn btn-danger">Delete</button>
     </div>);
   }
 }
@@ -335,20 +333,14 @@ const mapStateToProps = (state) => {
     error: state.ciqual.show.error,
     loading: state.ciqual.show.loading,
     retrieved:state.ciqual.show.retrieved,
-    deleteError: state.ciqual.del.error,
-    deleteLoading: state.ciqual.del.loading,
-    deleted: state.ciqual.del.deleted,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     retrieve: id => dispatch(retrieve(id)),
-    del: item => dispatch(del(item)),
     reset: () => {
       dispatch(reset());
-      dispatch(error(null));
-      dispatch(loading(false));
     },
   }
 };

@@ -2,27 +2,54 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link,withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { list, reset } from '../../actions/ciqual/list';
+import { search, reset } from '../../actions/ciqual/search';
 import { itemToLinks } from '../../utils/helpers';
+import { FormGroup, FormControl, InputGroup, Glyphicon} from 'react-bootstrap';
 import logo from '../../logo.svg';
 import '../../App.css';
 
-class List extends Component {
+class Search extends Component {
   static propTypes = {
     error: PropTypes.string,
+    searched: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired,
-    deletedItem: PropTypes.object,
-    list: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+       origgpfr: '',
+       origfdnm: ''
+    }
+  }
+
+  doSearch() {
+    var q = '';
+    if (this.state.origgpfr !=='') {
+       q = q + '?origgpfr='+this.state.origgpfr;
+
+        if (this.state.origfdnm !=='') {
+            q = q + '&origfdnm='+this.state.origfdnm;
+        }
+    }
+    else{
+        if (this.state.origfdnm !=='') {
+            q = q + '?origfdnm='+this.state.origfdnm;
+        }
+    }
+
+    this.props.search(q && decodeURIComponent(q));
+  }
+
   componentDidMount() {
-    this.props.list(this.props.match.params.page && decodeURIComponent(this.props.match.params.page));
+    this.props.search(this.props.match.params.page && decodeURIComponent(this.props.match.params.page));
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.page !== nextProps.match.params.page) nextProps.list(nextProps.match.params.page && decodeURIComponent(nextProps.match.params.page));
+    if (this.props.match.params.page !== nextProps.match.params.page) nextProps.search(nextProps.match.params.page && decodeURIComponent(nextProps.match.params.page));
   }
 
   componentWillUnmount() {
@@ -37,14 +64,52 @@ class List extends Component {
               <h1 className="App-title">Welcome to Ciqual Database</h1>
           </header>
           <div className="App-menu-row">
-              <ul className="App-menu">
-                  <li><Link to='..'>List</Link></li>
-                  <li> <Link to='../search'>Search</Link></li>
-              </ul>
+                <ul className="App-menu">
+                    <li><Link to='..'>List</Link></li>
+                    <li> <Link to='../search'>Search</Link></li>
+                </ul>
           </div>
       </div>
 
       <p></p>
+
+      <FormGroup>
+          <InputGroup>
+              <FormControl
+                  type={"text"}
+                  placeholder={"Search for an origgpfr"}
+                  value={this.state.origgpfr}
+                  onChange={event => {this.setState({origgpfr: event.target.value})}}
+                  onKeyPress={event =>{
+                      if (event.key === 'Enter') {
+                          this.doSearch()
+                      }
+                  }}
+              />
+            <InputGroup.Addon onClick={() => this.doSearch()}>
+                <Glyphicon glyph={"search"}></Glyphicon>
+            </InputGroup.Addon>
+          </InputGroup>
+      </FormGroup>
+
+      <FormGroup>
+            <InputGroup>
+                <FormControl
+                    type={"text"}
+                    placeholder={"Search for an origfdnm"}
+                    value={this.state.origfdnm}
+                    onChange={event => {this.setState({origfdnm: event.target.value})}}
+                    onKeyPress={event =>{
+                        if (event.key === 'Enter') {
+                            this.doSearch()
+                        }
+                    }}
+                />
+                <InputGroup.Addon onClick={() => this.doSearch()}>
+                    <Glyphicon glyph={"search"}></Glyphicon>
+                </InputGroup.Addon>
+            </InputGroup>
+      </FormGroup>
 
       {this.props.loading && <div className="alert alert-info">Loading...</div>}
 
@@ -226,19 +291,19 @@ class List extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.ciqual.list.data,
-    error: state.ciqual.list.error,
-    loading: state.ciqual.list.loading,
+    data: state.ciqual.search.data,
+    error: state.ciqual.search.error,
+    loading: state.ciqual.search.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    list: (page) => dispatch(list(page)),
+    search: (page) => dispatch(search(page)),
     reset: () => {
       dispatch(reset());
     },
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search));

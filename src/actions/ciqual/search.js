@@ -12,8 +12,15 @@ export function success(data) {
   return {type: 'CIQUAL_LIST_SUCCESS', data};
 }
 
-export function list(page = '/ciquals') {
-    return (dispatch) => {
+export function search(q) {
+
+  var page = '/ciquals';
+  console.log('query',q);
+
+  if(q)
+    page = '/ciquals' + q;
+
+  return (dispatch) => {
     dispatch(loading(true));
     dispatch(error(''));
 
